@@ -1,27 +1,6 @@
 <?php
-####### functions START
-function br(bool $return = false) {
-    if ($return) {
-        return '<br>';
-    }
-    echo '<br/>';
-}
-function pr(mixed $anything, bool $html = false): void
-{
-    if (!$html) {
-        $anything = print_r($anything, 1);
-        echo "<xmp>$anything</xmp>";
-    } else {
-        echo $anything;
-    }
-}
-function hw(int $hw, int $ts): void
-{
-    $ts = $ts ? " task:$ts" : '';
-    pr("HW$hw$ts");
-}
-####### functions END
 
+require('src/functions.php');
 
 #### HW0 START
 $hw = 0;
@@ -239,77 +218,77 @@ foreach ($cars as $brand => $car) {
 
 ##1.6
 $ts = 6;
+
+hw($hw, $ts);
+multiplyTable();
+br();
+br();
+br();
+
+$hw = 2;
+$ts = 0;
 hw($hw, $ts);
 
-const TABLE = 'table';
-const TR = 'tr';
-const TH = 'th';
-const TD = 'td';
-const STYLE = 'border: 1px solid gray; text-align: right';
-function getStyle(int $color): string {
+br();
+br();
+$ts = 1;
 
-}
-function getTag(string $tag, bool $close = false, $style = true, int $color = 0): string
-{
-    if ($color === 0) {
-        $color = '';
-    }
-    if ($color === 1) {
-        $color = '; background-color: lightgreen';
-    }
-    if ($color === 2) {
-        $color = '; color: white; background-color: deeppink';
-    }
-    if ($color === 3) {
-        $color = '; background-color: lightgray';
-    }
-    if ($style) {
-        $style = ' style ="' . STYLE . "$color\"";
-    } else {
-        $style = '';
-    }
-    if ($close) {
-        return "</$tag>";
-    }
-    return "<$tag" . $style . ">";
-}
-function getStringToPrint(int $x, int $y, int $n): array {
-    if(!($x % 2) && !($y % 2)) {
-        return [2, "($n)"];
-    }
-    if($x % 2 && $y % 2) {
-        return [1, "[$n]"];
-    }
-    return [3, ''.$n];
-}
-pr(getTag(TABLE), true);
-for($y = 0; $y < 10; $y++) {
-    pr(getTag(TH, false, false), true);
-    if ($y) {
-        pr($y);
-    }
-    pr(getTag(TH, true, false), true);
-}
-for($y = 1; $y < 10; $y++) {
-    pr(getTag(TR), true);
-    for($x = 1; $x < 10; $x++) {
-        if ($x === 1) {
-            pr(getTag(TH, false, false), true);
-            pr($y);
-        }
-        $printedNumber = getStringToPrint($x, $y, $x * $y);
-        pr(getTag(TD, false, true, $printedNumber[0]), true);
-        pr($printedNumber[1]);
-        pr(getTag(TD, true), true);
-        if ($x === 1) {
-            pr(getTag(TH, true, false), true);
-        }
-    }
-    pr(getTag(TR, true), true);
-}
-pr(getTag(TABLE, true), true);
-/*Используя цикл for, выведите таблицу умножения размером 10x10. Таблица должна быть выведена с помощью HTML тега <table>.
-Если значение индекса строки и столбца чётный, то результат вывести в круглых скобках.
-Если значение индекса строки и столбца Нечётный, то результат вывести в квадратных скобках.
-Во всех остальных случаях результат выводить просто числом.*/
-##### HW1 END
+hw($hw, $ts);
+task1(['dddd', 'ssss']);
+pr(task1(['dddd1', 'ssss1'], true));
+br();
+br();
+
+$ts = 2;
+hw($hw, $ts);
+task2(2);
+task2(2, 3, '+');
+task2('+', 1, 2, 3, 5.2);
+br();
+br();
+
+$ts = 3;
+hw($hw, $ts);
+task3();
+br();
+br();
+
+$ts = 4;
+hw($hw, $ts);
+task4();
+br();
+br();
+
+$ts = 5;
+hw($hw, $ts);
+task5();
+br();
+br();
+
+$ts = 6;
+hw($hw, $ts);
+task6();
+br();
+br();
+
+$ts = 7;
+hw($hw, $ts);
+task7();
+br();
+br();
+
+$ts = 8;
+hw($hw, $ts);
+task8();
+br();
+br();
+
+$ts = 9;
+hw($hw, $ts);
+task9();
+br();
+br();
+
+$ts = 10;
+hw($hw, $ts);
+task10();
