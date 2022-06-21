@@ -86,4 +86,30 @@ function task3_2(): void
 
 function task4_1()
 {
+    require('src/classes/Rates.php');
+
+    $student = Rates\Student::initialize();
+    /*time - minutes, distance - km*/
+    $student->calculatePrice(120, 12);
+    $student->addGps();
+    echo $student->getReceipt();
+    echo '<br/>';
+    echo '<br/>';
+
+    $basic = Rates\Basic::initialize();
+    /*time - minutes, distance - km*/
+    $basic->calculatePrice(60, 5);
+    $basic->addGps();
+    echo $basic->getReceipt();
+    echo '<br/>';
+    echo '<br/>';
+
+    $hours = Rates\Hours::initialize();
+    /*time - minutes*/
+    $hours->calculatePrice(150);
+    $hours->addDriver();
+    $hours->addGps();
+    echo $hours->getReceipt();
+    echo '<br/>';
+    echo '<br/>';
 }
