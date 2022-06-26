@@ -80,6 +80,8 @@ $orders = new Orders;
 
 /*get order data*/
 $orderData = $_POST;
+
+/*direct link*/
 if (!$orderData) {
     exit;
 }
