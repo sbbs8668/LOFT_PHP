@@ -1,71 +1,128 @@
 <?php
+require('PdoDb.php');
 
-/*get order data*/
-$orderData = $_POST;
-/*check the data*/
 const ORDER_SUCCESS = 'Спасибо, ваш заказ будет доставлен по адресу: ';
 const YOUR_ORDER_ID_TEXT = 'Номер вашего заказа: ';
-const ORDER_COUNT_MARKER = '@@';
-const YOUR_ORDER_COUNT_TEXT = 'Это ваш '.ORDER_COUNT_MARKER.'-й заказ!';
+const YOUR_ORDER_COUNT_TEXT = ['Это ваш ', '-й заказ!'];
 const ORDER_ERROR = ['Cannot proceed your order.', 'Fill in all fields, please.'];
+const DB_ERROR = ['Cannot proceed your order.', 'Please try again later.'];
 
-foreach ($orderData as $field) {
-    if (!$field) {
-        echo json_encode(ORDER_ERROR);
+class Orders
+{
+    private $db;
+
+    public function __construct()
+    {
+        $this->db = PdoDb\PdoDb::getInstance();
+    }
+
+    public function getUserId(string $email): int
+    {
+        $query = "SELECT `id` FROM `users` where `email` = :email";
+        $parameters = [':email' => $email];
+        $result = $this->db->fetchOne($query, $parameters);
+        return $result['id'] ?? 0;
+    }
+    public function insertNewOrder(int $userId, array $orderData): int
+    {
+        $check = 0;
+        $i = 0;
+        while(!$check && $i < 3) {
+            $query = "INSERT INTO `orders` (`userId`, `order`) VALUES (:id, :order);";
+            $parameters = [
+                ':id' => $userId,
+                ':order' => json_encode($orderData),
+            ];
+            $check = $this->db->exec($query, $parameters);
+            $i++;
+        }
+        if($check) {
+            return $this->db->getLastId();
+        }
+        return 0;
+    }
+    public function countUserOrders(int $userId): int
+    {
+        $query = "SELECT `id` FROM `orders` where `userId` = :userId";
+        $parameters = [':userId' => $userId];
+        $result = $this->db->fetchAll($query, $parameters);
+        return count($result);
+    }
+    public function createNewUser(string $newUserEmail): int
+    {
+        $check = 0;
+        $i = 0;
+        while(!$check && $i < 3) {
+            $query = "INSERT INTO `users` (`email`) VALUES (:email);";
+            $parameters = [
+                ':email' => $newUserEmail,
+            ];
+            $check = $this->db->exec($query, $parameters);
+            $i++;
+        }
+        if ($check) {
+            /*check if user inserted*/
+            $newUserId = $this->getUserId($newUserEmail);
+            if ($newUserId) {
+                return $newUserId;
+            }
+        }
+        return 0;
+    }
+    public function returnError(string $text): void
+    {
+        echo $text;
         exit;
     }
 }
 
-const DB_NAME = 'db.json';
-const DB_DEF_CONTENT = ['users' => [], 'orders' => []];
+$orders = new Orders;
 
-/*update db*/
-function updateDb($data): void
-{
-    $db = fopen(DB_NAME, 'w');
-    fwrite($db, json_encode($data));
-    fclose($db);
+/*get order data*/
+$orderData = $_POST;
+if (!$orderData) {
+    exit;
 }
 
-/*proceed the order*/
-function proceedOrder(array $orderData): void
-{
-    /*connect to db*/
-    if (!file_exists(DB_NAME)) {
-        updateDb(DB_DEF_CONTENT);
+/*check the data*/
+foreach ($orderData as $field) {
+    if (!$field) {
+        $orders->returnError(json_encode(ORDER_ERROR));
+        exit;
     }
-    $db = json_decode(file_get_contents(DB_NAME), true);
-
-    /*check if this user exists*/
-    $userEmail = $orderData['email'];
-    $checkUser = array_search($userEmail, $db['users']);
-
-    if (!$checkUser) {
-        /*create user*/
-        $userID = count($db['users']) ? count($db['users']) + 1 : 1;
-        $db['users'][$userID] = $userEmail;
-    } else {
-        $userID = $checkUser;
-    }
-
-    /*insert the order*/
-    unset($orderData['email']);
-    $orderId = rand(strlen($orderData['name']) ** 5, strlen($orderData['comment']) ** 6);
-    $orderData['id'] = $orderId;
-    $db['orders'][$userID][] = $orderData;
-
-    /*update db*/
-    updateDb($db);
-
-    /*response to frontend*/
-    $userOrdersCountText = str_replace(ORDER_COUNT_MARKER, count($db['orders'][$userID]), YOUR_ORDER_COUNT_TEXT);
-    unset($orderData['id']);
-    unset($orderData['name']);
-    unset($orderData['phone']);
-    unset($orderData['comment']);
-    $address = implode(' ', $orderData);
-    echo json_encode([ORDER_SUCCESS . $address, YOUR_ORDER_ID_TEXT . $orderId, $userOrdersCountText]);
 }
 
-proceedOrder($orderData);
+$userEmail = $orderData['email'];
+unset($orderData['email']);
+
+$newOrderId = 0;
+$userId = $orders->getUserId($userEmail);
+
+if (!$userId) {
+    /*create new user*/
+    $userId = $orders->createNewUser($userEmail);
+}
+
+if ($userId) {
+    /*insert new order*/
+    $newOrderId = $orders->insertNewOrder($userId, $orderData);
+}
+
+if (!$userId || !$newOrderId) {
+    $orders->returnError(json_encode(DB_ERROR));
+}
+
+/*order ordered*/
+/*count users orders*/
+$userOrdersNumber = $orders->countUserOrders($userId);
+
+/*respond to frontend*/
+unset($orderData['id']);
+unset($orderData['name']);
+unset($orderData['phone']);
+unset($orderData['comment']);
+$address = implode(' ', $orderData);
+$userOrdersCountText = YOUR_ORDER_COUNT_TEXT[0] . $userOrdersNumber . YOUR_ORDER_COUNT_TEXT[1];
+
+echo json_encode([ORDER_SUCCESS . $address, YOUR_ORDER_ID_TEXT . $newOrderId, $userOrdersCountText]);
 exit;

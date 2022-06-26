@@ -38,16 +38,23 @@ function createNewFile(string $fileName, string $fileContent, string $path = './
 function task3_1(): void
 {
     $users = [];
-    $i = 1;
     $numberOfUsers = 50;
     $userMinAge = 18;
     $userMaxAge = 45;
-    while ($i <= $numberOfUsers) {
+    for ($i = 0; $i < $numberOfUsers; $i++) {
         $users[$i] = [];
         $users[$i]['id'] = $i;
         $users[$i]['name'] = getTextString(5);
         $users[$i]['age'] = rand($userMinAge, $userMaxAge);
-        $i++;
+
+        /*add same name to count*/
+        $randomIndex = rand(0, 5);
+        for ($q = 0; $q < $randomIndex; $q++) {
+            if(isset($users[$i - $q])) {
+                /*print_r($users[$index - $randomIndex]);*/
+                $users[$i - $q]['name'] = $users[$i]['name'];
+            }
+        }
     }
     $jsonFileName = 'users.json';
     $jsonFileContent = json_encode($users);
@@ -61,7 +68,9 @@ function task3_1(): void
     $uniqueUsersNameCount = array_count_values(
         array_column($usersFromJson, $usersFiledToCount)
     );
-
+    uasort($uniqueUsersNameCount, function($name1, $name2) {
+        return $name2 <=> $name1;
+    });
     foreach ($uniqueUsersNameCount as $userName => $userNameCount) {
         echo "$userName: $userNameCount";
         echo '<br/>';
@@ -69,11 +78,14 @@ function task3_1(): void
     echo '<br/>';
 
     $usersFiledToCount = 'age';
-    $usersAverageAgeText = 'User average age is:';
+    $usersAverageAgeText = 'User average age:';
+    $usersCountText = 'Number of users:';
     $usersAgesArray = array_map(function($user) use ($usersFiledToCount) {
         return $user[$usersFiledToCount];
     }, $usersFromJson);
     $usersAverageAge = array_sum($usersAgesArray) / count($usersAgesArray);
+    echo $usersCountText . ' ' . count($usersFromJson);
+    echo '<br/>';
     echo "$usersAverageAgeText $usersAverageAge";
 
 }
