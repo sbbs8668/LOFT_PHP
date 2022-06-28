@@ -1,5 +1,6 @@
 .idea/
 .DS_Store
 burgers/api/db.json
+hw3/vendor
 w.php
 old-tasks.php
