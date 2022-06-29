@@ -78,7 +78,7 @@ function task3_1(): void
     echo '<br/>';
 
     $usersFiledToCount = 'age';
-    $usersAverageAgeText = 'User average age:';
+    $usersAverageAgeText = 'Register average age:';
     $usersCountText = 'Number of users:';
     $usersAgesArray = array_map(function($user) use ($usersFiledToCount) {
         return $user[$usersFiledToCount];
