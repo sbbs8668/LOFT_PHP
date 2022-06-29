@@ -1,0 +1,46 @@
+<?php
+$email = $_SESSION['email'] ?? '';
+$name = $_SESSION['name'] ?? '';
+$pswd = $_SESSION['pswd'] ?? '';
+?>
+
+<form class="register-form"
+      id="register"
+      name="register"
+      method="POST"
+      action="<?php echo $pathToSite;?>user/register"
+      enctype="multipart/form-data">
+  <h2>Please sign up</h2>
+  <label for="name">
+    <span>Your name:</span>
+    <input type="name" id="name" name="name" value="<?php echo $name;?>" placeholder="John..." maxlength="100">
+  </label>
+  <label for="email">
+    <span>Your email:</span>
+    <input type="email" id="email" name="email" value="<?php echo $email;?>" placeholder="john@..." maxlength="100">
+  </label>
+  <label for="pswd">
+    <span>Your password:</span>
+    <input type="password" id="pswd" name="pswd" value="<?php echo $pswd;?>" minlength="4">
+  </label>
+  <label for="pswdrep">
+      <span>Password again:</span>
+      <input type="password" id="pswdrep" name="pswdrep">
+    </label>
+  <label>
+    <input type="submit" value="Sign up">
+  </label>
+  <label>
+    <div class="errors"><?php echo $_SESSION['errors'];?></div>
+  </label>
+</form>
+<div>
+  <h2>Already have an account?</h2>
+  <a href="<?php echo $pathToSite;?>user/login">Sign in</a>
+</div>
+
+<?php
+$_SESSION['email'] = '';
+$_SESSION['name'] = '';
+$_SESSION['pswd'] = '';
+?>

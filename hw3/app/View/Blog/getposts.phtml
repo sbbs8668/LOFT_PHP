@@ -1,0 +1,106 @@
+<?php
+$user = json_decode($_SESSION['user'], true);
+$name = $user['name'];
+$email = $user['email'];
+$regdate = date('d-m-Y', $user['regdate']);
+$role = $user['role'] ? 'Admin' : 'User';
+$roleSwitch = $user['role'] ? 'User' : 'Admin';
+$lastPosts = json_decode($_SESSION['lastposts'], true);
+
+?>
+
+<main class="main">
+  <div class="user">
+    <label>
+      <h2>Hi, <?php echo $name; ?></h2>
+    </label>
+    <label>
+      <div>Your id: <?php echo $_SESSION['id']; ?></div>
+    </label>
+    <label>
+      <div>Your email: <?php echo $email; ?></div>
+    </label>
+    <label>
+      <div>Your are here since: <?php echo $regdate; ?></div>
+    </label>
+    <label>
+      <div>Your role is: <?php echo $role; ?></div>
+    </label>
+    <label>
+      <form class="login-form"
+          id="change_role"
+          name="change_role"
+          method="POST"
+          action="<?php echo $pathToSite;?>user/changerole"
+          enctype="multipart/form-data">
+        <input name="changerole" type="submit" value="Change role to <?php echo $roleSwitch;?>">
+    </form>
+    </label>
+    <label>
+      <h3>Post to blog</h3>
+    </label>
+    <label>
+      <form class="login-form"
+            id="post_to_blog"
+            name="post_to_blog"
+            method="POST"
+            action="<?php echo $pathToSite;?>blog/blog"
+            enctype="multipart/form-data">
+        <textarea name="posttext"></textarea>
+        <label><span>Add a picture</span><input type="file" id="images" name="images" accept="image/*"></label>
+        <input name="submit" type="submit" value="Add post">
+      </form>
+    </label>
+    <label>
+      <div class="errors"><?php echo $_SESSION['errors'];?></div>
+    </label>
+    <form class="login-form"
+          name="postapi"
+          method="POST"
+          action="<?php echo $pathToSite;?>blog/postapi"
+          enctype="multipart/form-data">
+      <label>
+        <span>Enter user id to get his/her 20 last posts</span>
+        <input name="user_id" type="number">
+        <input name="submit" type="submit" value="TEST API">
+      </label>
+      <label><small>API url: /blog/postapi POST only</small></label>
+    </form>
+  </div>
+  <div class="blog">
+    <form class="remove-post"
+          name="remove_post"
+          method="POST"
+          action="<?php echo $pathToSite;?>blog/removepost"
+          enctype="multipart/form-data">
+    <?php foreach($lastPosts as $post): ?>
+      <div class="blog-post">
+        <div class="post-author">
+          Name: <?= $post['userName']; ?>
+          ID: <?= $post['userID']; ?>
+        </div>
+        <div class="post-date">
+          <?= date('d-m-Y', $post['date']); ?>
+        </div>
+        <div class="post-content">
+          <?php
+            if ($post['image']) {
+              echo '<img src="' . $post['image'] .'"/>';
+            };
+            ?>
+          <?= $post['text']; ?>
+        </div>
+          <?php
+          if ($user['role']) {
+            echo '
+              <div class="post-remove">
+                <input name="submit' . $post['id'] . '" type="submit" value="Remove post">
+              </div>
+            ';
+          } ?>
+      </div>
+    <?php endforeach; ?>
+    </form>
+  </div>
+  <h4><a class="signout" href="<?php echo $pathToSite;?>user/signout">Sign out</a></h4>
+</main>

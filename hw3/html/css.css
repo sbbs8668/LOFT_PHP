@@ -1,0 +1,115 @@
+body {
+  position: relative;
+  text-align: center;
+}
+h2 {
+  line-height: 1.6px;
+}
+.login-form,
+.register-form
+{
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+.login-form label,
+.register-form label
+{
+  margin: 4px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.login-form span,
+.register-form span
+{
+  width: 120px;
+  text-align: left;
+}
+.errors {
+  margin: 4px 0;
+  font-weight: bold;
+  color: #e25028;
+}
+
+main {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+  height: 100%;
+}
+.user {
+  text-align: left;
+  border: 1px solid black;
+  width: 40%;
+  height: 100%;
+  margin: 10px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+.blog {
+  border: 1px solid black;
+  width: 60%;
+  height: 100%;
+  margin: 10px;
+  padding: 10px;
+  box-sizing: border-box;
+  overflow: scroll;
+}
+textarea {
+  resize: none;
+  height: 100px;
+}
+
+.signout {
+  position: absolute;
+  bottom: 40px;
+  left: 40px;
+}
+
+.blog-post {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid linen;
+  margin: 6px 6px 16px 6px;
+  padding: 4px 4px;
+  min-height: 120px;
+  position: relative;
+}
+
+.post-author {
+  font-weight: 700;
+  font-size: 20px;
+  padding: 4px;
+  align-self: flex-start;
+}
+
+.post-date {
+  font-weight: 400;
+  font-size: 12px;
+  padding: 4px;
+  align-self: flex-start;
+}
+
+.post-content {
+  font-weight: 400;
+  font-size: 16px;
+  padding: 4px;
+  text-align: left;
+}
+.post-content img {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 80px;
+  margin: 4px 6px;
+  max-width: 100px;
+}
+
+.post-remove input {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
