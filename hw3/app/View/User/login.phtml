@@ -21,7 +21,7 @@ $email = $_SESSION['email'] ?? '';
     <input type="submit" value="Log in">
   </label>
   <label>
-    <div class="errors"><?php echo $_SESSION['errors'];?></div>
+    <div class="errors"><?php echo $_SESSION['errors'] ?? '';?></div>
   </label>
 </form>
 <div>
