@@ -6,7 +6,7 @@ trait RenderSite
 {
   public function rendersite(): void
   {
-    $pathToSite = '/LOFT_PHP/hw3/html/';
+    $pathToSite = $this->gettroot();
     $css = '<head><link href="' . $pathToSite . 'css.css" rel="stylesheet"></head>';
     if (isset($this->fileTemplateUrl)) {
       if (file_get_contents($this->fileTemplateUrl)) {

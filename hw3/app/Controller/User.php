@@ -23,8 +23,7 @@ class User extends AbstractController
     $this->class = REDIRECT_TO_BLOG_CLASS;
     $this->proceed();
   }
-  public function login(): void
-  {
+  public function login(): void{
     if (isset($_SESSION['user']) && $_SESSION['user']) {
       $this->redirectToBlog();
     } else {

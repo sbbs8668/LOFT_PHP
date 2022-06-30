@@ -3,13 +3,14 @@ namespace Src;
 
 class Routes
 {
+  use Getsiteroot;
   private static string $controllerName = '';
   private static string $actionName = '';
   private static Routes $selfInstance;
   private string $pathToRoot;
   private function __construct()
   {
-    $this->pathToRoot = trim(file_get_contents(__DIR__. '/pathtoroot.txt'));
+    $this->pathToRoot = $this->gettroot();
     $fullURL = parse_url($_SERVER['REQUEST_URI']);
     $siteURI = strtolower(str_replace($this->pathToRoot, '', $fullURL['path']));
     $controllerAction = explode(DIRECTORY_SEPARATOR, $siteURI);
