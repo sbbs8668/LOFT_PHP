@@ -1,12 +1,12 @@
 <?php
 
-namespace App\View\Functions;
+namespace App\View\Traits;
 
 trait RenderSite
 {
   public function rendersite(): void
   {
-    $pathToSite = $this->gettroot();
+    $pathToSite = $this->getRoot();
     $css = '<head><link href="' . $pathToSite . 'css.css" rel="stylesheet"></head>';
     if (isset($this->fileTemplateUrl)) {
       if (file_get_contents($this->fileTemplateUrl)) {
@@ -16,7 +16,7 @@ trait RenderSite
         echo ob_get_clean();
         $_SESSION['errors'] = '';
       } else {
-        header('Location: '. $pathToSite);
+        $this->toMain();
       }
     }
   }

@@ -1,20 +1,30 @@
 <?php
 namespace Src;
-use App\View\Functions as ViewFunctions;
-use App\Model\Functions as ModelFunctions;
+
+use Src\Traits;
+
+use App\Controller\Traits as ControllerTraits;
+
+use App\Model as Model;
+use App\Model\Traits as ModelTraits;
+
+use App\View\Traits as ViewFunctions;
 
 abstract class AbstractController
 {
-  use Getsiteroot;
-  use ModelFunctions\Lastposts;
-  use ModelFunctions\GetModelClassPath;
-  use ModelFunctions\ModelSite;
+  use Traits\Getsiteroot;
+
+  use ControllerTraits\Redirects;
+
+  use Model\Controller;
+  use ModelTraits\GetModelClassPath;
+
   use ViewFunctions\GetTemplateUrl;
   use ViewFunctions\RenderSite;
+
   protected string $fileTemplateUrl;
   protected array $modelClassPath;
-  protected function goToMainPage(): void
-  {
-    header('Location: '. trim(file_get_contents(__DIR__. '/pathtoroot.txt')));
-  }
+
+  protected string $class;
+  protected string $method;
 }

@@ -1,22 +1,31 @@
 <?php
 namespace App\Model\Blog;
 
-use Src\PdoDb;
 use Src\AbstractModel;
+
+const API_POSTS_NUMBER = 20;
 
 class Postapi extends AbstractModel
 {
-  protected PdoDb $db;
-  public function postapi():void
+  public function postapi(): void
   {
-    /*check if user is admin*/
     if (isset($_POST['user_id'])) {
-      $postsNumder = 20;
-      $query = "SELECT * FROM `posts` WHERE `user` = :id ORDER BY `date` LIMIT $postsNumder;";
+      $postsNumber = API_POSTS_NUMBER;
+      $query = "
+        SELECT 
+            `id`,
+            `user`,
+            `text`,
+            `image`,
+            `date`
+        FROM `posts`
+        WHERE 
+            `user` = :id
+            AND NOT `state` = 0
+        ORDER BY `date` LIMIT $postsNumber;";
       $parameters = [
         ':id' => (int)$_POST['user_id'],
       ];
-      $this->db = PdoDb::getInstance();
       $posts = $this->db->fetchAll($query, $parameters, __METHOD__);
       echo(json_encode($posts));
       exit;

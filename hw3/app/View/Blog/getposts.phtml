@@ -44,7 +44,7 @@ $lastPosts = json_decode($_SESSION['lastposts'], true);
             id="post_to_blog"
             name="post_to_blog"
             method="POST"
-            action="<?php echo $pathToSite;?>blog/blog"
+            action="<?php echo $pathToSite;?>blog/post"
             enctype="multipart/form-data">
         <textarea name="posttext"></textarea>
         <label><span>Add a picture</span><input type="file" id="images" name="images" accept="image/*"></label>

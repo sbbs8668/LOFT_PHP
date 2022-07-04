@@ -7,35 +7,44 @@ use Src\AbstractController;
 class Blog extends AbstractController
 {
   protected PdoDb $db;
+
+  private function proceed(): void
+  {
+    $this->fileTemplateUrl = $this->getFileUrl(__DIR__, $this->class, $this->method);
+    $this->modelClassPath = $this->getModeClassPath($this->class, $this->method);
+  }
   public function getposts()
   {
     if (isset($_SESSION['user']) && $_SESSION['user']) {
-      $this->getLastPosts();
-      $this->fileTemplateUrl = $this->getFileUrl(__DIR__, __CLASS__, __METHOD__);
-      $this->modelClassPath = $this->getModeClassPath(__CLASS__, __METHOD__);
+      $this->toBlog();
     } else {
-      $this->goToMainPage();
+      $this->toMain();
     }
   }
-  public function blog()
+  public function post()
   {
-    $this->fileTemplateUrl = $this->getFileUrl(__DIR__, __CLASS__, __METHOD__);
-    $this->modelClassPath = $this->getModeClassPath(__CLASS__, __METHOD__);
+    $this->method = __METHOD__;
+    $this->class = __CLASS__;
+    $this->proceed();
   }
   public function removepost()
   {
     if (isset($_SESSION['user']) && $_SESSION['user']) {
-      $this->fileTemplateUrl = $this->getFileUrl(__DIR__, __CLASS__, __METHOD__);
-      $this->modelClassPath = $this->getModeClassPath(__CLASS__, __METHOD__);
+      $this->method = __METHOD__;
+      $this->class = __CLASS__;
+      $this->proceed();
+    } else {
+      $this->toMain();
     }
   }
   public function postapi()
   {
     if (isset($_POST['user_id'])) {
-      $this->fileTemplateUrl = $this->getFileUrl(__DIR__, __CLASS__, __METHOD__);
-      $this->modelClassPath = $this->getModeClassPath(__CLASS__, __METHOD__);
+      $this->method = __METHOD__;
+      $this->class = __CLASS__;
+      $this->proceed();
     } else {
-      $this->goToMainPage();
+      $this->toMain();
     }
   }
 }

@@ -1,5 +1,5 @@
 <?php
-namespace App\View\Functions;
+namespace App\View\Traits;
 
 const VIEW_DIR = 'View';
 const FILE_EXT = '.phtml';

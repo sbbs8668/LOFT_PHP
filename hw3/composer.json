@@ -4,5 +4,8 @@
       "App\\": "app/",
       "Src\\": "src/"
     }
+  },
+  "require": {
+    "ext-gd": "*"
   }
 }

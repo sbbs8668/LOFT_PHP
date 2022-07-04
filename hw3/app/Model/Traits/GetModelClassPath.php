@@ -1,5 +1,5 @@
 <?php
-namespace App\Model\Functions;
+namespace App\Model\Traits;
 
 trait GetModelClassPath {
   protected function getModeClassPath(string $class, string $method): array

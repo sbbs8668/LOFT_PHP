@@ -1,7 +1,6 @@
 <?php
 namespace App\Model\User;
 
-use Src\PdoDb;
 use Src\AbstractModel;
 
 const MISSING_LOGIN_DATA_ERROR = 'Fill in all fields, please.';
@@ -12,18 +11,14 @@ class Login extends AbstractModel
   private int $id = 0;
   private string $email = '';
   private string $pswd = '';
-  private PdoDb $db;
 
-  public function __construct()
+  public function login()
   {
     /*check if it is already logged in with session*/
     if (isset($_SESSION['id']) && is_numeric($_SESSION['id']) && $_SESSION['id']) {
       $this->id = $_SESSION['id'];
     }
-  }
-  public function login()
-  {
-    $this->db = PdoDb::getInstance();
+
     if ($this->id) {
       /*it will log in from session and redirect to the blog*/
       $this->loginFromSession();

@@ -10,22 +10,18 @@ const BASIC_REGISTER_ERROR = 'Ooops.. something went wrong... Please try again!'
 
 class Register extends AbstractModel
 {
-  private int $id;
   private int $error;
   private string $name;
   protected string $email;
   private string $pswd;
-  protected PdoDb $db;
 
-  public function __construct()
+  private function validateData(): void
   {
+    $this->error = 0;
     $this->name = '';
     $this->email = '';
     $this->pswd = '';
-    $this->error = 0;
-  }
-  private function validateData(): void
-  {
+
     if ($_POST['name']) {
       if (strlen($_POST['name']) > MAX_NAME_LENGTH){
         $this->error = 1;
@@ -85,16 +81,15 @@ class Register extends AbstractModel
           ];
           $this->db->exec($query, $parameters, __METHOD__);
           $newUserID = $this->db->getLastId();
-          $checkNewUser = $this->getExistedUser($newUserID);
+          $checkNewUser = $this->getExistedUser($this->email, $newUserID);
           /*with id checks by id and email and returns array if new user is ok*/
           if(!$checkNewUser) {
             $this->showError(BASIC_REGISTER_ERROR);
           } else {
             $_SESSION['id'] = $newUserID;
-            $user['email'] = $this->email;
-            $user = json_encode($checkNewUser);
-            $_SESSION['user'] = $user;
+            $_SESSION['user'] = json_encode($checkNewUser);
             $this->reloadSite();
+            exit;
           }
         }
       } else {

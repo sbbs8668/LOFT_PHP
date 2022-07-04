@@ -1,12 +1,16 @@
 <?php
-namespace App\Model\Functions;
+namespace App\Model;
 
 const APP_MODEL = 'App\\Model\\';
 
-trait ModelSite
+trait Controller
 {
-  public function modelsite(): void
+  public function modelController(): void
   {
+    if (!isset($this->modelClassPath)) {
+      $this->toMain();
+      exit;
+    }
     $modelPath = $this->modelClassPath[0];
     $modelClass =  $this->modelClassPath[1];
     $modelMethod = strtolower($this->modelClassPath[1]);
