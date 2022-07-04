@@ -4,35 +4,25 @@ if (isset($_SESSION['confirm']) && $_SESSION['confirm'] === 100000) {
   $_SESSION['confirm'] = 0;
   $_SESSION['error'] = '';
 }
-?>
 
-<form class="login-form"
-      id="login"
-      name="login"
-      method="POST"
-      action="<?php echo $pathToSite;?>user/login"
-      enctype="multipart/form-data">
-  <h2>Please sign in</h2>
-  <label for="email">
-    <span>Your email:</span>
-    <input type="email" id="email" name="email" value="<?php echo $email;?>" placeholder="john@..." maxlength="100">
-  </label>
-  <label for="pswd">
-    <span>Your password:</span>
-    <input type="password" id="pswd" name="pswd">
-  </label>
-  <label>
-    <input type="submit" value="Log in">
-  </label>
-  <label>
-    <div class="errors"><?php echo $_SESSION['errors'] ?? '';?></div>
-  </label>
-</form>
-<div>
-  <h2>Do not have an account yet?</h2>
-  <a href="<?php echo $pathToSite;?>user/register">Sign up</a>
-</div>
+/*TWIG START*/
+use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
+use Twig\Loader\FilesystemLoader;
+$loader = new FilesystemLoader(__DIR__ );
+$twig = new Environment($loader);
+$twig->addGlobal('vars',
+  [
+    'pathToSite' => $pathToSite,
+    'email' => $email,
+    'sessionError' => $_SESSION['errors'] ?? ''
+  ]);
+try {
+  echo $twig->render('login-twig.twig');
+} catch (LoaderError|RuntimeError|SyntaxError $e) {}
+/*TWIG END*/
 
-<?php
 $_SESSION['email'] = '';
-?>
+
