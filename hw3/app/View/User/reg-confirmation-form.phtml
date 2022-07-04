@@ -1,0 +1,18 @@
+<form class="register-form confirmation-form"
+      id="confirm"
+      name="confirm"
+      method="POST"
+      action="<?php echo $pathToSite;?>user/confirm"
+      enctype="multipart/form-data">
+  <h2>A pin code has been sent to your email address!</h2>
+  <label for="pincode">
+    <span>Please enter your pin code here:</span>
+    <input type="text" id="pincode" name="pincode">
+  </label>
+  <label>
+    <input type="submit" value="Confirm registration">
+  </label>
+  <label>
+    <div>If you have not received a pin code, please, repeat registration.</div>
+  </label>
+</form>

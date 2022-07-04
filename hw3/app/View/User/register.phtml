@@ -2,6 +2,7 @@
 $email = $_SESSION['email'] ?? '';
 $name = $_SESSION['name'] ?? '';
 $pswd = $_SESSION['pswd'] ?? '';
+$confirm = $_SESSION['confirm'] ?? 0;
 ?>
 
 <form class="register-form"
@@ -28,12 +29,22 @@ $pswd = $_SESSION['pswd'] ?? '';
       <input type="password" id="pswdrep" name="pswdrep">
     </label>
   <label>
-    <input type="submit" value="Sign up">
+    <input type="submit" value="Sign up" id="signup">
   </label>
   <label>
     <div class="errors"><?php echo $_SESSION['errors'];?></div>
   </label>
 </form>
+
+<?php
+if ($confirm === 100000) {
+  ob_start();
+  include(__DIR__ . '/reg-confirmation-form.phtml');
+  echo ob_get_clean();
+}
+?>
+
+
 <div>
   <h2>Already have an account?</h2>
   <a href="<?php echo $pathToSite;?>user/login">Sign in</a>

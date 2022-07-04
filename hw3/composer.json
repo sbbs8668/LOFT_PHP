@@ -6,6 +6,7 @@
     }
   },
   "require": {
-    "ext-gd": "*"
+    "ext-gd": "*",
+    "symfony/mailer": "^6.1"
   }
 }

@@ -49,4 +49,10 @@ class User extends AbstractController
     $this->class = __CLASS__;
     $this->proceed();
   }
+  public function confirm(): void
+  {
+    $this->method = __METHOD__;
+    $this->class = __CLASS__;
+    $this->proceed();
+  }
 }

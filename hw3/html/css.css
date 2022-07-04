@@ -113,3 +113,7 @@ textarea {
   bottom: 0;
   right: 0;
 }
+
+.confirmation-form {
+  margin: 40px 0;
+}

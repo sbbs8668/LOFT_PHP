@@ -1,5 +1,9 @@
 <?php
 $email = $_SESSION['email'] ?? '';
+if (isset($_SESSION['confirm']) && $_SESSION['confirm'] === 100000) {
+  $_SESSION['confirm'] = 0;
+  $_SESSION['error'] = '';
+}
 ?>
 
 <form class="login-form"

@@ -3,7 +3,7 @@ namespace App\Model\Traits;
 
 trait GetUser {
 
-  protected function getExistedUser(string $email = '', int $id = 0): array
+  protected function getExistedUser(string $email = '', int $id = 0, int $confirm = 1): array
   {
     $result = [];
     $parameters = [];
@@ -13,7 +13,7 @@ trait GetUser {
     }
 
     $query = "
-        SELECT `name`, `email`, `regdate`, `role`
+        SELECT `name`, `email`, `regdate`, `role`, `confirm`
         FROM `users`
     ";
     $query .= ' WHERE';
@@ -30,7 +30,8 @@ trait GetUser {
       $query .= ' `id` = :id';
       $parameters[':id'] = $id;
     }
-    $query .= ';';
+    $query .= ' AND `confirm` = :confirm;';
+    $parameters[':confirm'] = $confirm;
 
     $result = $this->db->fetchOne($query, $parameters, __METHOD__);
     if (!$result) {

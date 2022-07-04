@@ -12,6 +12,7 @@ abstract class AbstractModel
   {
     $this->db = PdoDb::getInstance();
   }
+  use Traits\Getsiteroot;
   use Traits\Getsalt;
   use Traits\Makepswd;
   use Traits\Clearerrors;

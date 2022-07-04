@@ -1,15 +1,20 @@
 <?php
 namespace App\Model\User;
-use Src\PdoDb;
+use Error;
 use Src\AbstractModel;
+use Src;
 
 const MAX_NAME_LENGTH = 100;
 const MAX_EMAIL_LENGTH = 100;
 const MISSING_REGISTER_DATA_ERROR = 'Please, check your data nad fill in all fields.';
 const BASIC_REGISTER_ERROR = 'Ooops.. something went wrong... Please try again!';
+const CONFIRM_SUBJECT = 'Please confirm your registration';
+const CONFIRM_MESSAGE = 'Your pin code is:';
 
 class Register extends AbstractModel
 {
+  use Src\Mailsender;
+
   private int $error;
   private string $name;
   protected string $email;
@@ -52,6 +57,10 @@ class Register extends AbstractModel
     $_SESSION['pswd'] = $_POST['pswd'];
     $_SESSION['errors'] = $error;
   }
+
+  /**
+   * @throws \Symfony\Component\Mailer\Exception\TransportExceptionInterface
+   */
   public function register()
   {
     if ($_POST) {
@@ -62,6 +71,8 @@ class Register extends AbstractModel
         if($this->getExistedUser()) {
           $this->showError(BASIC_REGISTER_ERROR);
         } else {
+          $confirm = rand(1000, 10000);
+          $confirmMessage = CONFIRM_MESSAGE . ' ' .$confirm;
           /*ok insert*/
           $query = "
             INSERT INTO
@@ -69,27 +80,47 @@ class Register extends AbstractModel
                   `name`,
                   `email`,
                   `pswd`,
-                  `regdate`
+                  `regdate`,
+                  `confirm`
                 )
-            VALUES (:name, :email, :pswd, :regdate);
+            VALUES (:name, :email, :pswd, :regdate, :confirm);
           ";
           $parameters = [
             ':name' => $this->name,
             ':email' => $this->email,
             ':pswd' => $this->pswd,
-            ':regdate' => time()
+            ':regdate' => time(),
+            ':confirm' => $confirm
           ];
           $this->db->exec($query, $parameters, __METHOD__);
           $newUserID = $this->db->getLastId();
-          $checkNewUser = $this->getExistedUser($this->email, $newUserID);
+          $checkNewUser = $this->getExistedUser($this->email, $newUserID, $confirm);
           /*with id checks by id and email and returns array if new user is ok*/
           if(!$checkNewUser) {
             $this->showError(BASIC_REGISTER_ERROR);
           } else {
             $_SESSION['id'] = $newUserID;
-            $_SESSION['user'] = json_encode($checkNewUser);
-            $this->reloadSite();
-            exit;
+
+            $_SESSION['confirm'] = 100000;
+            /*send email*/
+            try {
+              $this->sendEmail($this->email, CONFIRM_SUBJECT, $confirmMessage);
+              $this->reloadSite();
+            } catch (Error $e) {
+              $query = "
+                UPDATE
+                  `users`
+                SET 
+                    `email` = '',
+                    `confirm` = 0
+                WHERE `id` = $newUserID
+              ";
+              $this->db->exec($query, [], __METHOD__);
+              $_SESSION['id'] = '';
+              $_SESSION['user'] = '';
+              $_SESSION['confirm'] = 0;
+              $this->showError(BASIC_REGISTER_ERROR);
+            }
           }
         }
       } else {

@@ -36,6 +36,7 @@ class Login extends AbstractModel
         FROM `users`
         WHERE 
             `id` = :id
+        AND `confirm` = 1
     ;";
     $parameters = [
       ':id' => $this->id
@@ -77,6 +78,7 @@ class Login extends AbstractModel
         WHERE 
             `email` = :email AND
             `pswd` = :pswd
+        AND `confirm` = 1
     ;";
     $parameters = [
       ':email' => $this->email,
@@ -88,6 +90,7 @@ class Login extends AbstractModel
       $user['email'] = $this->email;
       $user = json_encode($user);
       $_SESSION['user'] = $user;
+      $_SESSION['errors'] = '';
       $this->reloadSite();
     } else {
       $_SESSION['email'] = $this->email;

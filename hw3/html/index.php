@@ -1,5 +1,6 @@
 <?php
 session_start();
+$_SESSION['error'] = '';
 require_once '../vendor/autoload.php';
 use Src\Proceed;
 
