@@ -48,13 +48,13 @@ $lastPosts = json_decode($_SESSION['lastposts'], true);
             enctype="multipart/form-data">
         <textarea name="posttext"></textarea>
         <label><span>Add a picture</span><input type="file" id="images" name="images" accept="image/*"></label>
-        <input name="submit" type="submit" value="Add post">
+        <input name="addpost" id="addpost" type="submit" value="Add post">
       </form>
     </label>
     <label>
       <div class="errors"><?php echo $_SESSION['errors'];?></div>
     </label>
-    <form class="login-form"
+    <form class="login-form sendpost"
           name="postapi"
           method="POST"
           action="<?php echo $pathToSite;?>blog/postapi"
@@ -62,8 +62,8 @@ $lastPosts = json_decode($_SESSION['lastposts'], true);
       <label>
         <span>Enter user id to get his/her 20 last posts</span>
         <input name="user_id" type="number">
-        <input name="submit" type="submit" value="TEST API">
       </label>
+      <input name="submit" type="submit" value="TEST API">
       <label><small>API url: /blog/postapi POST only</small></label>
     </form>
   </div>

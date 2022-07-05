@@ -12,7 +12,7 @@ class Post extends AbstractModel
   use Images;
   public function post()
   {
-    if (isset($_POST['posttext']) && $_POST['posttext']) {
+    if (isset($_POST['posttext']) && $_POST['posttext'] && isset($_SESSION['id']) && $_SESSION['id']) {
       /*check if user from session really exists*/
       $userID = $_SESSION['id'];
       $user = json_decode($_SESSION['user'], true);
