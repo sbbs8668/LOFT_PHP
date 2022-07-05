@@ -1,0 +1,1 @@
+smtp://loftphp:loftPHP1111@smtp.rambler.ru:465

@@ -1,8 +1,8 @@
 <?php
 namespace App\Model\User;
-use Error;
 use Src\AbstractModel;
 use Src;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 
 const MAX_NAME_LENGTH = 100;
 const MAX_EMAIL_LENGTH = 100;
@@ -106,7 +106,7 @@ class Register extends AbstractModel
             try {
               $this->sendEmail($this->email, CONFIRM_SUBJECT, $confirmMessage);
               $this->reloadSite();
-            } catch (Error $e) {
+            } catch (TransportExceptionInterface $e) {
               $query = "
                 UPDATE
                   `users`

@@ -8,6 +8,7 @@
   "require": {
     "ext-gd": "*",
     "symfony/mailer": "^6.1",
-    "twig/twig": "^3.0"
+    "twig/twig": "^3.0",
+    "ext-imagick": "*"
   }
 }

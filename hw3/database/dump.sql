@@ -16,22 +16,19 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `posts`
+-- Table structure for table `orders`
 --
 
-DROP TABLE IF EXISTS `posts`;
+DROP TABLE IF EXISTS `orders`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `posts` (
+CREATE TABLE `orders` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `user` int NOT NULL,
-  `text` text NOT NULL,
-  `image` longtext NOT NULL,
-  `date` int NOT NULL,
-  `state` int DEFAULT '1',
+  `userId` int DEFAULT NULL,
+  `order` text NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `posts_id_uindex` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  UNIQUE KEY `orders_id_uindex` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -48,9 +45,10 @@ CREATE TABLE `users` (
   `pswd` varchar(256) DEFAULT NULL,
   `regdate` int NOT NULL,
   `role` int NOT NULL DEFAULT '0',
+  `confirm` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_id_uindex` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=124 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -62,4 +60,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-06-29 21:01:56
+-- Dump completed on 2022-07-05  3:18:42
