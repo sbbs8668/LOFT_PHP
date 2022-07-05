@@ -68,7 +68,7 @@ class Register extends AbstractModel
       $this->validateData();
       if (!$this->error) {
         /*without id checks by email and returns '' if theres no user with this email*/
-        if($this->getExistedUser()) {
+        if($this->getExistedUser($this->email)) {
           $this->showError(BASIC_REGISTER_ERROR);
         } else {
           $confirm = rand(1000, 10000);
