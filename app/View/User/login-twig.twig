@@ -1,0 +1,26 @@
+<form class="{{ vars.FORM_CLASS }}"
+      id="login"
+      name="login"
+      method="POST"
+      action="{{ vars.pathToSite }}user/login"
+      enctype="multipart/form-data">
+  <h2>Please sign in</h2>
+  <label for="email">
+    <span>Your email:</span>
+    <input type="email" id="email" name="email" value="{{ vars.email }}" placeholder="john@..." maxlength="100">
+  </label>
+  <label for="pswd">
+    <span>Your password:</span>
+    <input type="password" id="pswd" name="pswd">
+  </label>
+  <label>
+    <input type="submit" value="Log in">
+  </label>
+  <label>
+    <div class="errors">{{ vars.sessionError }}</div>
+  </label>
+</form>
+<div>
+  <h2>Do not have an account yet?</h2>
+  <a href="{{ vars.pathToSite }}user/register">Sign up</a>
+</div>

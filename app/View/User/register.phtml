@@ -1,0 +1,57 @@
+<?php
+$email = $_SESSION['email'] ?? '';
+$name = $_SESSION['name'] ?? '';
+$pswd = $_SESSION['pswd'] ?? '';
+$confirm = $_SESSION['confirm'] ?? 0;
+const USER_REGISTER_TEMPORARY_CONFIRM = 100000;
+const FORM_CLASS = 'form';
+?>
+
+<form class="<?=FORM_CLASS?>"
+      id="register"
+      name="register"
+      method="POST"
+      action="<?=$pathToSite?>user/register"
+      enctype="multipart/form-data">
+  <h2>Please sign up</h2>
+  <label for="name">
+    <span>Your name:</span>
+    <input type="name" id="name" name="name" value="<?=$name?>" placeholder="John..." maxlength="100">
+  </label>
+  <label for="email">
+    <span>Your email:</span>
+    <input type="email" id="email" name="email" value="<?=$email?>" placeholder="john@..." maxlength="100">
+  </label>
+  <label for="pswd">
+    <span>Your password:</span>
+    <input type="password" id="pswd" name="pswd" value="<?=$pswd?>" minlength="4">
+  </label>
+  <label for="pswdrep">
+      <span>Password again:</span>
+      <input type="password" id="pswdrep" name="pswdrep">
+    </label>
+  <input type="submit" value="Sign up" id="signup">
+  <label>
+    <div class="errors"><?=$_SESSION['errors']?></div>
+  </label>
+</form>
+
+<?php
+if ($confirm === USER_REGISTER_TEMPORARY_CONFIRM) {
+  ob_start();
+  include(__DIR__ . '/reg-confirmation-form.phtml');
+  echo ob_get_clean();
+}
+?>
+
+
+<div>
+  <h2>Already have an account?</h2>
+  <a href="<?=$pathToSite?>user/login">Sign in</a>
+</div>
+
+<?php
+$_SESSION['email'] = '';
+$_SESSION['name'] = '';
+$_SESSION['pswd'] = '';
+?>

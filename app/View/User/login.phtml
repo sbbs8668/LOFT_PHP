@@ -1,0 +1,27 @@
+<?php
+const FORM_CLASS = 'form';
+/*save email to fill in the email field again, if the passwd is incorrect*/
+$email = $_SESSION['email'] ?? '';
+
+/*TWIG START*/
+use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
+use Twig\Loader\FilesystemLoader;
+$loader = new FilesystemLoader(__DIR__ );
+$twig = new Environment($loader);
+$twig->addGlobal('vars',
+  [
+    'pathToSite' => $pathToSite,
+    'email' => $email,
+    'FORM_CLASS' => FORM_CLASS,
+    'sessionError' => $_SESSION['errors'] ?? ''
+  ]);
+try {
+  echo $twig->render('login-twig.twig');
+} catch (LoaderError|RuntimeError|SyntaxError $e) {}
+/*TWIG END*/
+
+$_SESSION['email'] = '';
+
