@@ -39,7 +39,12 @@ class Blog extends AbstractController
   }
   public function postapi()
   {
-    if (isset($_POST['user_id'])) {
+    if (file_get_contents('php://input')) {
+        $img = json_decode(file_get_contents('php://input'));
+    } else {
+        $img = [];
+    }
+    if (isset($_POST['user_id']) || isset($img[0]) && $img[0] === 'img') {
       $this->method = __METHOD__;
       $this->class = __CLASS__;
       $this->proceed();

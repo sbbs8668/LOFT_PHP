@@ -8,16 +8,21 @@ h2 {
   text-align: center;
 }
 h3 {
+  margin: 4px;
   text-align: center;
 }
 .form {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  margin: 20px 2px 20px 2px;
+  margin: 10px 2px 20px 2px;
   background: white;
   padding: 10px;
 }
+.remove-post{
+  margin-top: 0;
+}
+
 .form label {
   margin: 4px 0;
   display: flex;
@@ -31,7 +36,20 @@ h3 {
 .errors {
   margin: 4px 0;
   font-weight: bold;
+  font-size: 22px;
   color: #e25028;
+  text-align: center;
+}
+
+.post-errors {
+  position: absolute;
+  text-align: center;
+  top: 20px;
+  right:20px;
+  z-index: 20;
+  background: white;
+  padding: 10px;
+  box-sizing: border-box;
 }
 
 main {
@@ -51,7 +69,17 @@ main {
   box-sizing: border-box;
   min-width: 430px;
   background: #f8f8f8;
+  position: relative;
 }
+
+.user-avatar {
+  position: absolute;
+  top: 30px;
+  right: 24px;
+  max-width: 100px;
+  cursor: pointer;
+}
+
 .blog {
   border: 1px solid black;
   width: 60%;
@@ -69,8 +97,9 @@ textarea {
 
 .signout {
   position: absolute;
-  bottom: 40px;
-  left: 40px;
+  bottom: 20px;
+  left: 20px;
+  color: red;
 }
 
 .blog-post {
@@ -79,22 +108,21 @@ textarea {
   border: 1px solid linen;
   margin: 6px 6px 16px 6px;
   padding: 4px 4px;
-  min-height: 120px;
   position: relative;
+  border: 1px solid lightgray;
 }
 
 .post-author {
+  text-align: left;
   font-weight: 700;
-  font-size: 20px;
+  font-size: 14px;
   padding: 4px;
-  align-self: flex-start;
 }
 
 .post-date {
   font-weight: 400;
   font-size: 12px;
   padding: 4px;
-  align-self: flex-start;
 }
 
 .post-content {
@@ -102,9 +130,10 @@ textarea {
   font-size: 16px;
   padding: 4px;
   text-align: left;
+  display: flex;
+  justify-content: space-between;
 }
 .post-content img {
-  position: absolute;
   top: 0;
   right: 0;
   height: 80px;
@@ -114,9 +143,8 @@ textarea {
 }
 
 .post-remove input {
-  position: absolute;
   bottom: 0;
-  right: 0;
+  right: 10px;
 }
 
 .confirmation-form {
@@ -140,12 +168,72 @@ textarea {
   cursor: pointer;
 }
 
+input[type="number"],
+input[type="email"],
+input[type="text"],
+input[type="password"]
+{
+  min-width: 200px;
+  max-width: 200px;
+}
 input[type="submit"] {
   min-width: 300px;
   max-width: 300px;
   margin: 10px auto;
 }
+input.remove-post-button,
+input[name="removeavatar"]
+{
+  min-width: 120px;
+  max-width: 120px;
+}
 
 .sendpost {
   margin-top: 100px;
+}
+
+form[name="change_user"] {
+  align-content: center;
+}
+form[name="change_user"] label {
+  justify-content: space-between;
+}
+form[name="change_user"] label input {
+  margin-left: 30px;
+}
+
+.user-post {
+  border: 2px solid green;
+}
+
+.post-data {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.post-user-avatar {
+  max-width: 60px;
+  cursor: pointer;
+}
+
+.admin-data {
+  font-weight: 700;
+}
+
+label.lbimages {
+  margin-top: 10px;
+}
+
+.display-none {
+  display: none;
+}
+
+.img-border {
+  border: 1px solid lightgray;
+  width: 100px;
+}
+.avatar-border {
+  border: 1px solid lightgray;
+  height: 60px;
+  width: 60px;
 }

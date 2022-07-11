@@ -1,39 +1,84 @@
 <?php
 $user = json_decode($_SESSION['user'], true);
+if (!isset($user['avatar'])) {
+    $user['avatar'] = '';
+}
 $name = $user['name'];
 $email = $user['email'];
 $regdate = date('d-m-Y', $user['regdate']);
 $role = $user['role'] ? 'Admin' : 'User';
 $roleSwitch = $user['role'] ? 'User' : 'Admin';
 $lastPosts = json_decode($_SESSION['lastposts'], true);
+$lastpostsImages = json_decode($_SESSION['lastpostsImages'], true);
 const FORM_CLASS = 'form';
 ?>
 <main class="main">
-  <div class="user">
-    <label>
+  <div class="user display-none">
+    <?php if ($user['role']):?>
+      <form class='<?= FORM_CLASS ?>'
+            id='change_user'
+            name='change_user'
+            method='POST'
+            action="<?= $pathToSite ?>user/changeuser"
+            enctype='multipart/form-data'
+            autocomplete='off'
+      >
+    <?php endif; ?>
+        <label>
       <h2>Hi, <?=$name?></h2>
     </label>
+        <?php if ($user['avatar'] && $user['role']): ?>
+        <div>
+            <img src="<?=$user['avatar']?>" class="user-avatar"/>
+            <?php if ($user['role']):?>
+                <input name='removeavatar' type='submit' value='Remove avatar'>
+            <?php endif;?>
+        </div>
+    <?php endif; ?>
     <?php if ($user['role']):?>
-    <label>
-      <div>Your id: <?=$_SESSION['id']?></div>
-    </label>
-    <label>
-      <div>Your email: <?=$email?></div>
-    </label>
-    <label>
-      <div>Your are here since: <?=$regdate?></div>
-    </label>
-    <?php endif;?>
-    <label>
-      <div>Your role is: <?=$role?></div>
-    </label>
+      <div class='admin-data'>
+          <label>
+              <div>Your id: <?= $_SESSION['id'] ?></div>
+          </label>
+          <label>
+              <div>Your email: <?= $email ?></div>
+          </label>
+          <label>
+              <div>Your are here since: <?= $regdate ?></div>
+          </label>
+      </div>
+      <label for='name'>
+          <div>Your new name:</div>
+          <input type='text' id='name' name='name' placeholder='John...' maxlength='100' autocomplete="off">
+      </label>
+      <label for='pswd'>
+          <div>Your new password:</div>
+          <input type='password' id='pswd' name='pswd' minlength='4' autocomplete="new-password">
+      </label>
+      <label for='pswdrep'>
+          <div>New password again:</div>
+          <input type='password' id='pswdrep' name='pswdrep' autocomplete="off">
+      </label>
+      <label for="avatar">
+          <?php if($user['avatar']):?>
+              <span>Change avatar</span>
+          <?php else:?>
+              <span>Add avatar</span>
+          <?php endif;?>
+          <input type='file' id='avatar' name='avatar' accept='image/*'>
+      </label>
+      <input form='change_user' name='changeuser' id="changeuser" type='submit' value="Confirm changes">
+    </form>
+  <?php endif;?>
     <label>
       <form class="<?=FORM_CLASS?>"
           id="change_role"
           name="change_role"
           method="POST"
           action="<?=$pathToSite?>user/changerole"
-          enctype="multipart/form-data">
+          enctype="multipart/form-data"
+      >
+        <h3>Your role is: <?=$role?></h3>
         <input name="changerole" type="submit" value="Change role to <?=$roleSwitch?>">
     </form>
     </label>
@@ -47,7 +92,7 @@ const FORM_CLASS = 'form';
       >
          <h3>Post to blog</h3>
         <textarea name="posttext"></textarea>
-        <label><span>Add a picture</span><input type="file" id="images" name="images" accept="image/*"></label>
+        <label class="lbimages" for='images'><span>Add a picture</span><input type="file" id="images" name="images" accept="image/*"></label>
         <input name="addpost" id="addpost" type="submit" value="Add post">
       </form>
     </label>
@@ -64,15 +109,12 @@ const FORM_CLASS = 'form';
         </label>
         <input name="submit" type="submit" value="TEST API">
         <label>
-         <small>API url: /blog/postapi POST only</small>
+            <small>API url: /blog/postapi POST only</small>
         </label>
       </form>
     <?php endif;?>
-    <label>
-      <div class='errors'><?= $_SESSION['errors'] ?></div>
-    </label>
   </div>
-  <div class="blog">
+  <div class="blog  display-none">
     <?php if ($user['role']):?>
         <form class="<?=FORM_CLASS?> remove-post"
               name="remove_post"
@@ -82,30 +124,48 @@ const FORM_CLASS = 'form';
         >
     <?php endif;?>
     <?php foreach($lastPosts as $post): ?>
-      <div class="blog-post">
-        <div class="post-author">
-          Name: <?=$post['userName']?>
-          ID: <?=$post['userID']?>
+      <div class="blog-post <?php if ($post['userID'] === $_SESSION['id']):?>user-post<?php endif;?>">
+        <div class='post-content'>
+              <div><?= $post['text'] ?></div>
+              <?php if (isset($lastpostsImages[$post['id']]['image'])):?>
+                  <div>
+                      <img id="imgImg<?=$post['id']?>" class="img-border"/>
+                  </div>
+              <?php endif; ?>
         </div>
-        <div class="post-date">
-          <?=date('d-m-Y', $post['date'])?>
-        </div>
-        <div class="post-content">
-          <?php if ($post['image']):?>
-            <img src="<?=$post['image']?>"/>
-          <?php endif;?>
-          <?=$post['text']?>
-        </div>
-          <?php if ($user['role'] && $post['userID'] === $_SESSION['id']):?>
-            <div class='post-remove'>
-              <input name="submit<?=$post['id']?>>" type='submit' value='Remove post'>
+        <div class="post-data">
+            <?php if (isset($lastpostsImages[$post['id']]['avatar'])):?>
+                <div>
+                    <img id="avtImg<?=$post['id']?>" class="avatar-border post-user-avatar"/>
+                </div>
+            <?php endif; ?>
+            <div class="post-author">
+              Author: <?=$post['userName']?>
             </div>
-          <?php endif;?>
+            <small>
+              Author ID: <?=$post['userID']?>
+            </small>
+            <div class="post-date">
+              <?=date('d-m-Y', $post['date'])?>
+            </div>
+            <?php if ($user['role'] && $post['userID'] === $_SESSION['id']):?>
+              <div class='post-remove'>
+                <input class="remove-post-button" name="submit<?=$post['id']?>>" type='submit' value='Remove post'>
+              </div>
+            <?php endif;?>
+        </div>
       </div>
     <?php endforeach; ?>
     <?php if ($user['role']):?>
         </form>
     <?php endif;?>
   </div>
-  <h4><a class="signout" href="<?=$pathToSite?>user/signout">Sign out</a></h4>
+  <h4>
+      <a class="signout" href="<?=$pathToSite?>user/signout">Sign out</a>
+  </h4>
+  <?php if ($_SESSION['errors']):?>
+    <label>
+        <div class='errors post-errors'><?= $_SESSION['errors'] ?></div>
+    </label>
+  <?php endif;?>
 </main>

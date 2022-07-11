@@ -43,6 +43,14 @@ class User extends AbstractController
       $this->proceed();
     }
   }
+  public function changeuser(): void
+  {
+    if (isset($_SESSION['user']) && $_SESSION['user']) {
+        $this->method = __METHOD__;
+        $this->class = __CLASS__;
+        $this->proceed();
+    }
+  }
   public function signout(): void
   {
     $this->method = __METHOD__;
@@ -54,5 +62,11 @@ class User extends AbstractController
     $this->method = __METHOD__;
     $this->class = __CLASS__;
     $this->proceed();
+  }
+  public function recoverpasswd(): void
+  {
+      $this->method = __METHOD__;
+      $this->class = __CLASS__;
+      $this->proceed();
   }
 }

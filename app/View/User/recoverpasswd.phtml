@@ -1,0 +1,44 @@
+<?php
+const FORM_CLASS = 'form';
+?>
+
+<?php if (!isset($_SESSION['recoverypsswd'])):?>
+    <form class='<?= FORM_CLASS ?>'
+      id='recoverpasswd'
+      name='recoverpasswd'
+      method='POST'
+      action='<?= $pathToSite ?>user/recoverpasswd'
+      enctype='multipart/form-data'
+    >
+        <h2>Enter your account email</h2>
+        <label for='email'>
+            <input type='email' id='recoveryemail' name='recoveryemail' placeholder='john@...' maxlength='100'>
+        </label>
+        <input type='submit' value='Recover password' id='submitrecovery'>
+        <label>
+            <div class='errors'><?= $_SESSION['errors'] ?></div>
+        </label>
+    </form>
+<?php else:?>
+    <form class='<?= FORM_CLASS ?>'
+          id='recoverpasswd'
+          name='recoverpasswd'
+          method='POST'
+          action='<?= $pathToSite ?>user/recoverpasswd'
+          enctype='multipart/form-data'
+    >
+        <div><b>A new password has been sent to your email address.</b></div>
+        <h2>Enter your new password here</h2>
+        <label for='email'>
+            <input type='password' id='recoverypsswd' name='recoverypsswd'>
+        </label>
+        <input type='submit' value='Confirm password change' id='submitrecovery'>
+        <label>
+            <div class='errors'><?= $_SESSION['errors'] ?></div>
+        </label>
+    </form>
+<?php endif;?>
+<div>
+    <h2>Changed your mind?</h2>
+    <a href="<?=$pathToSite?>user/login">Cancel recovery</a>
+</div>

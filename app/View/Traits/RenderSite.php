@@ -10,7 +10,7 @@ trait RenderSite
     $css = '<link href="' . $pathToSite . 'css.css" rel="stylesheet">';
     $js = '<script src="' . $pathToSite . 'js.js" type="text/javascript"></script>';
     if (isset($this->fileTemplateUrl)) {
-      if (file_get_contents($this->fileTemplateUrl)) {
+      if (file_exists($this->fileTemplateUrl)) {
         ob_start();
         echo '<head>';
         echo $css;

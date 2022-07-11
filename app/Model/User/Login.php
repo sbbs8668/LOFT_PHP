@@ -15,6 +15,9 @@ class Login extends AbstractModel
 
   public function login()
   {
+    /*cancel temporary recovery*/
+    unset($_SESSION['recoverypsswd']);
+
     if (isset($_SESSION['confirm']) && $_SESSION['confirm'] === USER_REGISTER_TEMPORARY_CONFIRM) {
           $_SESSION['confirm'] = 0;
           $_SESSION['error'] = '';
@@ -38,7 +41,7 @@ class Login extends AbstractModel
     /*if (isset($_SESSION['user']) && $_SESSION['user']) {}*/
     /*if it gets here that means SESSION['id'] is set, $_SESSION['user'] is not */
     $query = "
-        SELECT `name`, `email`, `regdate` 
+        SELECT `name`, `email`, `regdate`, `avatar`
         FROM `users`
         WHERE 
             `id` = :id
@@ -79,7 +82,7 @@ class Login extends AbstractModel
   private function loginByEmail()
   {
     $query = "
-        SELECT `id`, `name`, `regdate`, `role`
+        SELECT `id`, `name`, `regdate`, `role`, `avatar`
         FROM `users`
         WHERE 
             `email` = :email AND

@@ -16,7 +16,7 @@ const FORM_CLASS = 'form';
   <h2>Please sign up</h2>
   <label for="name">
     <span>Your name:</span>
-    <input type="name" id="name" name="name" value="<?=$name?>" placeholder="John..." maxlength="100">
+    <input type="text" id="name" name="name" value="<?=$name?>" placeholder="John..." maxlength="100">
   </label>
   <label for="email">
     <span>Your email:</span>
@@ -29,7 +29,7 @@ const FORM_CLASS = 'form';
   <label for="pswdrep">
       <span>Password again:</span>
       <input type="password" id="pswdrep" name="pswdrep">
-    </label>
+  </label>
   <input type="submit" value="Sign up" id="signup">
   <label>
     <div class="errors"><?=$_SESSION['errors']?></div>

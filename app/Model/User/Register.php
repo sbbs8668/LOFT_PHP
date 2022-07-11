@@ -7,6 +7,7 @@ use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 const USER_REGISTER_TEMPORARY_CONFIRM = 100000;
 const MAX_NAME_LENGTH = 100;
 const MAX_EMAIL_LENGTH = 100;
+const MIN_PSWD_LENGTH = 4;
 const MISSING_REGISTER_DATA_ERROR = 'Please, check your data nad fill in all fields.';
 const BASIC_REGISTER_ERROR = 'Ooops.. something went wrong... Please try again!';
 const CONFIRM_SUBJECT = 'Please confirm your registration';
@@ -42,7 +43,7 @@ class Register extends AbstractModel
         $this->email = $_POST['email'];
       }
     }
-    if (strlen($_POST['pswd']) >= 4 && $_POST['pswd'] === $_POST['pswdrep']) {
+    if (strlen($_POST['pswd']) >= MIN_PSWD_LENGTH && $_POST['pswd'] === $_POST['pswdrep']) {
       $this->pswd = $this->makePswd();
     } else {
       $this->error = 1;
@@ -82,7 +83,8 @@ class Register extends AbstractModel
                   `email`,
                   `pswd`,
                   `regdate`,
-                  `confirm`
+                  `confirm`,
+                  `avatar`
                 )
             VALUES (:name, :email, :pswd, :regdate, :confirm);
           ";
@@ -91,7 +93,8 @@ class Register extends AbstractModel
             ':email' => $this->email,
             ':pswd' => $this->pswd,
             ':regdate' => time(),
-            ':confirm' => $confirm
+            ':confirm' => $confirm,
+            ':avatar' => ''
           ];
           $this->db->exec($query, $parameters, __METHOD__);
           $newUserID = $this->db->getLastId();

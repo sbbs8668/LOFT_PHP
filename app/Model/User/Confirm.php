@@ -26,6 +26,7 @@ class Confirm extends AbstractModel
       $this->db->exec($query, [':id' => (int)$_SESSION['id']], __METHOD__);
       $_SESSION['id'] = (int)$_SESSION['id'];
       unset($user['confirm']);
+      $user['avatar'] = '';
       $_SESSION['user'] = json_encode($user);
       $_SESSION['confirm'] = 1;
       $_SESSION['errors'] = '';

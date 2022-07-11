@@ -1,12 +1,16 @@
 <?php
-session_start();
-$_SESSION['error'] = '';
-require_once 'vendor/autoload.php';
-use Src\Proceed;
 
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
+
+session_start();
+$_SESSION['error'] = '';
+
+require_once 'vendor/autoload.php';
+/*require_once 'src/Eloquent/init.php';*/
+
+use Src\Proceed;
 
 /*set path to template ($this->fileTemplateUrl) and path to model class ($this->modelClassPath) */
 /*if url is wrong, sets both for redirect to 404*/

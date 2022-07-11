@@ -4,8 +4,9 @@ namespace Src\Traits;
 
 trait Makepswd
 {
-  protected function makePswd(): string
+  protected function makePswd(string $pswd = ''): string
   {
-    return sha1($this->getSlt() . $_POST['pswd']);
+    $pswd = $pswd ?: $_POST['pswd'];
+    return sha1($this->getSlt() . $pswd);
   }
 }

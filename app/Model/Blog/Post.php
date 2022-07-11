@@ -19,7 +19,7 @@ class Post extends AbstractModel
       $email = $user['email'];
       $check = $this->getExistedUser($email, $userID);
       if ($check) {
-        if ($_FILES['images']['tmp_name']) {
+        if (isset($_FILES['images']) && $_FILES['images']['tmp_name']) {
           $img = file_get_contents($_FILES['images']['tmp_name']);
           $img = $this->imageResize($img);
         }
